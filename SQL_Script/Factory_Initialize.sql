@@ -1,35 +1,22 @@
  USE MASTER;
 GO
 -- CREATE ISPC DATABASE
-IF NOT EXISTS(SELECT * FROM SysDatabases WHERE name='ISPC')
+IF  EXISTS(SELECT * FROM SysDatabases WHERE name='ISPC')	
 	BEGIN
-		CREATE DATABASE ISPC
-			ON PRIMARY
-			(
-				NAME = 'ISPC_DAT',
-				FILENAME = 'D:\ISPC Database\ISPC_DAT.MDF'
-			)
-			LOG ON
-			(
-				NAME = 'ISPC_LOG',
-				FILENAME = 'D:\ISPC Database\ISPC_DAT.LDF'
-			)
+		DROP DATABASE ISPC			
 	END
-ELSE
-	BEGIN
-		DROP DATABASE ISPC	
-		CREATE DATABASE ISPC
-			ON PRIMARY
-			(
-				NAME = 'ISPC_DAT',
-				FILENAME = 'D:\ISPC Database\ISPC_DAT.MDF'
-			)
-			LOG ON
-			(
-				NAME = 'ISPC_LOG',
-				FILENAME = 'D:\ISPC Database\ISPC_DAT.LDF'
-			)
-	END
+	
+	CREATE DATABASE ISPC
+		ON PRIMARY
+		(
+			NAME = 'ISPC_DAT',
+			FILENAME = 'D:\ISPC Database\ISPC_DAT.MDF'
+		)
+		LOG ON
+		(
+			NAME = 'ISPC_LOG',
+			FILENAME = 'D:\ISPC Database\ISPC_DAT.LDF'
+		)
 GO
 
 USE ISPC;
@@ -300,7 +287,8 @@ IF NOT EXISTS(SELECT Name FROM sysobjects WHERE TYPE='Model')
 		[Type] NVARCHAR(50) NOT NULL,
 		Project_Id INT,
 		Components NVARCHAR(max),
-		--Cpk_Components NVARCHAR(1000),
+		CpkComponents NVARCHAR(max),
+		XBarComponents NVARCHAR(max),
 		Creator_Id INT NOT NULL,
 		Creation_Time DATETIME NOT NULL,
 		CONSTRAINT FK_Project_Model FOREIGN KEY(Project_Id) REFERENCES Project(Project_Id),
